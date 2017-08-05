@@ -46,7 +46,7 @@ func main()  {
   // sent the hash to haveibeenpwned.com API
   code := request(hash)
 
-  // check the status code and prompt the result
+  // output
   fmt.Println()
   if code == 200 {
     color.Red("  Oh no, you have been pwned! :-(\n\n")
