@@ -5,6 +5,7 @@ import (
   "log"
   "crypto/sha1"
   "net/http"
+
   "github.com/fatih/color"
 )
 
@@ -19,8 +20,8 @@ func request(h string) (c int) {
   url := "https://haveibeenpwned.com/api/v2/pwnedpassword/" + h + "?originalPasswordIsAHash=true"
   res, err := http.Get(url)
   if err != nil {
-		log.Fatal(err)
-	}
+    log.Fatal(err)
+  }
   defer res.Body.Close()
 
   c = res.StatusCode
@@ -36,16 +37,16 @@ func main()  {
   fmt.Printf("Password: ")
   fmt.Scanln(&password)
 
-  // hash the password with SHA-1
+  // hash password with SHA-1
   hash := hash(password)
   fmt.Printf("Thanks, the SHA-1 hash of your password is ")
   color.New(color.Bold).Println(hash)
-  fmt.Println("I will send the hash now to haveibeenpwned.com to check if you have been pwned ...")
 
-  // send the hash to haveibeenpwned.com API
+  // send hash to haveibeenpwned.com API
+  fmt.Println("I will send the hash now to haveibeenpwned.com to check if you have been pwned ...")
   code := request(hash)
 
-  // final output
+  // output result
   fmt.Println()
   if code == 200 {
     color.Red("  Oh no, you have been pwned! :-(\n\n")
