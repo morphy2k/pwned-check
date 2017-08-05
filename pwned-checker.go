@@ -5,6 +5,7 @@ import (
   "log"
   "crypto/sha1"
   "net/http"
+  "strings"
 
   "github.com/fatih/color"
 )
@@ -29,10 +30,10 @@ func request(h string) (c int) {
   return
 }
 
-func main()  {
+func start()  {
   var password string
 
-  // password query
+  // password input
   fmt.Println("Please enter your password, I will hash it locally")
   fmt.Printf("Password: ")
   fmt.Scanln(&password)
@@ -57,5 +58,31 @@ func main()  {
     color.Yellow("  Ooops, we have an unkown error here! :-/")
   }
   fmt.Println()
+
+}
+
+func main()  {
+
+  // first start
+  start()
+
+  // repeat?
+  for {
+    var r string
+
+    fmt.Println("Want to check another password?")
+    fmt.Printf("Yes or no (y/n): ")
+    fmt.Scanln(&r)
+
+    r = strings.ToLower(r)
+
+    if r == "yes" || r == "y" {
+      start()
+    } else if r == "no" || r == "n" {
+      break
+    } else {
+      fmt.Println("Sorry, I don't know what you mean. Try again")
+    }
+  }
 
 }
