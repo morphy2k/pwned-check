@@ -12,10 +12,6 @@ func hash(p string) (h string)  {
   d := []byte(p)
   h = fmt.Sprintf("%x", sha1.Sum(d))
 
-  fmt.Printf("Thanks, the SHA-1 hash of your password is ")
-  color.New(color.Bold).Println(h)
-  fmt.Println("I will sent the hash now to haveibeenpwned.com to check if you have been pwned ...")
-
   return
 }
 
@@ -36,17 +32,20 @@ func main()  {
   var password string
 
   // password query
-  fmt.Println("Please enter your password, I will hash it localy")
+  fmt.Println("Please enter your password, I will hash it locally")
   fmt.Printf("Password: ")
   fmt.Scanln(&password)
 
   // hash the password with SHA-1
   hash := hash(password)
+  fmt.Printf("Thanks, the SHA-1 hash of your password is ")
+  color.New(color.Bold).Println(hash)
+  fmt.Println("I will send the hash now to haveibeenpwned.com to check if you have been pwned ...")
 
-  // sent the hash to haveibeenpwned.com API
+  // send the hash to haveibeenpwned.com API
   code := request(hash)
 
-  // output
+  // final output
   fmt.Println()
   if code == 200 {
     color.Red("  Oh no, you have been pwned! :-(\n\n")
