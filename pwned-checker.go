@@ -44,16 +44,16 @@ func start()  {
   color.New(color.Bold).Println(hash)
 
   // send hash to haveibeenpwned.com API
-  fmt.Println("I will send the hash now to haveibeenpwned.com to check if you have been pwned ...")
+  fmt.Println("I will send the hash now to haveibeenpwned.com to check if the password have been pwned ...")
   code := request(hash)
 
   // output result
   fmt.Println()
   if code == 200 {
-    color.Red("  Oh no, you have been pwned! :-(\n\n")
+    color.Red("  Oh no, it have been pwned! :-(\n\n")
     fmt.Println("  If you use the password somewhere, then change it immediately!")
   } else if code == 404 {
-    color.Green("  Congrats, you does not seem to be pwned :-)")
+    color.Green("  Congrats, it does not seem to be pwned :-)")
   } else {
     color.Yellow("  Ooops, we have an unkown error here! :-/")
   }
@@ -81,7 +81,7 @@ func main()  {
     } else if r == "no" || r == "n" {
       break
     } else {
-      fmt.Println("Sorry, I don't know what you mean. Try again")
+      fmt.Println("Sorry, I don't know what you mean. Please try again")
     }
   }
 
