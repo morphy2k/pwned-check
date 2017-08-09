@@ -30,16 +30,20 @@ func request(h string) (c int) {
   return
 }
 
-func start()  {
+func start(f bool)  {
   var password string
 
   // password input
-  fmt.Println("Please enter your password, I will hash it locally")
+  fmt.Println()
+  if f {
+    fmt.Println("Please enter your password, I will hash it locally")
+  }
   fmt.Printf("Password: ")
   fmt.Scanln(&password)
 
   // hash password with SHA-1
   hash := hash(password)
+  fmt.Println()
   fmt.Printf("Thanks, the SHA-1 hash of your password is ")
   color.New(color.Bold).Println(hash)
 
@@ -50,7 +54,7 @@ func start()  {
   // output result
   fmt.Println()
   if code == 200 {
-    color.Red("  Oh no, it have been pwned! :-(\n\n")
+    color.Red("  Oh no, it have been pwned! :-(\n")
     fmt.Println("  If you use the password somewhere, then change it immediately!")
   } else if code == 404 {
     color.Green("  Congrats, it does not seem to be pwned :-)")
@@ -64,7 +68,7 @@ func start()  {
 func main()  {
 
   // first start
-  start()
+  start(true)
 
   // repeat?
   for {
@@ -77,7 +81,7 @@ func main()  {
     r = strings.ToLower(r)
 
     if r == "yes" || r == "y" {
-      start()
+      start(false)
     } else if r == "no" || r == "n" {
       break
     } else {
