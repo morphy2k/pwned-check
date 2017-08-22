@@ -120,7 +120,7 @@ func main() {
 		r = strings.ToLower(r)
 
 		if r == "yes" || r == "y" {
-			interactive()
+			interactive(false)
 		} else if r == "no" || r == "n" {
 			break
 		} else {
