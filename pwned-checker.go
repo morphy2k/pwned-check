@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"crypto/sha1"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/fatih/color"
@@ -27,8 +30,33 @@ func request(h [20]byte) (c int) {
 	return
 }
 
-func start(f bool) {
-	var password string
+func stdin() {
+
+	r := bufio.NewReader(os.Stdin)
+	p, _ := r.ReadString('\n')
+	p = strings.Replace(p, "\n", "", -1)
+
+	if len(p) > 0 {
+		h := hash(p)
+		c := request(h)
+
+		if c == 200 {
+			fmt.Println("\nPassword have been pwned!")
+			os.Exit(0)
+		} else if c == 404 {
+			os.Exit(0)
+		} else {
+			os.Exit(1)
+		}
+
+	} else {
+		os.Exit(1)
+	}
+}
+
+// interactive mode
+func interactive(f bool) {
+	var p string
 
 	// password input
 	fmt.Println()
@@ -36,24 +64,24 @@ func start(f bool) {
 		fmt.Println("Please enter your password, I will hash it locally")
 	}
 	fmt.Printf("Password: ")
-	fmt.Scanln(&password)
+	fmt.Scanln(&p)
 
 	// hash password with SHA-1
-	h := hash(password)
+	h := hash(p)
 	fmt.Println()
 	fmt.Printf("Thanks, the SHA-1 hash of your password is ")
 	color.New(color.Bold).Printf("%x\n", h)
 
 	// send hash to haveibeenpwned.com API
 	fmt.Println("I will send the hash now to haveibeenpwned.com to check if the password have been pwned ...")
-	code := request(h)
+	c := request(h)
 
 	// output result
 	fmt.Println()
-	if code == 200 {
+	if c == 200 {
 		color.Red("  Oh no, it have been pwned! :-(\n")
 		fmt.Println("  If you use the password somewhere, then change it immediately!")
-	} else if code == 404 {
+	} else if c == 404 {
 		color.Green("  Congrats, it does not seem to be pwned :-)")
 	} else {
 		color.Yellow("  Ooops, we have an unkown error here! :-/")
@@ -64,8 +92,17 @@ func start(f bool) {
 
 func main() {
 
-	// first start
-	start(true)
+	var m int
+
+	flag.IntVar(&m, "mode", 0, "0 interactive mode, 1 stdin mode")
+	flag.Parse()
+
+	if m == 1 {
+		stdin()
+	}
+
+	// interactive mode (default)
+	interactive(true)
 
 	// repeat?
 	for {
@@ -78,7 +115,7 @@ func main() {
 		r = strings.ToLower(r)
 
 		if r == "yes" || r == "y" {
-			start(false)
+			interactive(false)
 		} else if r == "no" || r == "n" {
 			break
 		} else {
