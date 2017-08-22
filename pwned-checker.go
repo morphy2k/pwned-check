@@ -13,10 +13,12 @@ import (
 	"github.com/fatih/color"
 )
 
+// password hashing
 func hash(p string) [20]byte {
 	return sha1.Sum([]byte(p))
 }
 
+// API request
 func request(h [20]byte) (c int) {
 	url := fmt.Sprintf("https://haveibeenpwned.com/api/v2/pwnedpassword/%x?originalPasswordIsAHash=true", h)
 	res, err := http.Get(url)
@@ -30,8 +32,10 @@ func request(h [20]byte) (c int) {
 	return
 }
 
+// stdin mode
 func stdin() {
 
+	// read stdin
 	r := bufio.NewReader(os.Stdin)
 	p, _ := r.ReadString('\n')
 	p = strings.Replace(p, "\n", "", -1)
@@ -94,17 +98,18 @@ func main() {
 
 	var m int
 
-	flag.IntVar(&m, "mode", 0, "0 interactive mode, 1 stdin mode")
+	flag.IntVar(&m, "mode", 0, "0 Interactive (default)\n        1 Stdin")
 	flag.Parse()
 
+	// start stdin mode
 	if m == 1 {
 		stdin()
 	}
 
-	// interactive mode (default)
+	// start interactive mode (default)
 	interactive(true)
 
-	// repeat?
+	// repeat for interactive mode
 	for {
 		var r string
 
@@ -115,7 +120,7 @@ func main() {
 		r = strings.ToLower(r)
 
 		if r == "yes" || r == "y" {
-			interactive(false)
+			interactive()
 		} else if r == "no" || r == "n" {
 			break
 		} else {
