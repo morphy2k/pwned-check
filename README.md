@@ -1,6 +1,6 @@
 # pwned-check
 Simple tool that checks if your password have been pwned via the [haveibeenpwned.com](https://haveibeenpwned.com) API.<br>
-It hashes your password locally and sends the first 5 characters ([k-anonymity](https://en.wikipedia.org/wiki/K-anonymity)) to the server. Afterwards, the list obtained from the server is locally searched for matches.
+It hashes your password locally and sends the first 5 characters ([k-anonymity](https://en.wikipedia.org/wiki/K-anonymity)) of the hash to the server. Afterwards, the list obtained from the server is locally searched for matches.
 
 ## Usage
 
