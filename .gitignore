@@ -3,6 +3,7 @@
 *.dll
 *.so
 *.dylib
+pwned-check
 
 # Test binary, build with `go test -c`
 *.test
